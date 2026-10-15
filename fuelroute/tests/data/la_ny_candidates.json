@@ -1,0 +1,103 @@
+{
+ "description": "Real candidates (stations within 10 mi of the Los Angeles -> New York route) for every stop used by the 11-stop plan that shipped before the local-search fix and by the 8-stop plan after it. route_mile/offset_miles/price are the values the API computed.",
+ "route_miles": 2793.56,
+ "candidates": [
+  {
+   "opis_id": 72965,
+   "city": "North Las Vegas",
+   "state": "NV",
+   "route_mile": 277.4396,
+   "offset_miles": 2.0053,
+   "price": 3.28233
+  },
+  {
+   "opis_id": 71712,
+   "city": "Green River",
+   "state": "UT",
+   "route_mile": 673.4605,
+   "offset_miles": 0.3286,
+   "price": 3.28233
+  },
+  {
+   "opis_id": 72572,
+   "city": "Brighton",
+   "state": "CO",
+   "route_mile": 1034.6919,
+   "offset_miles": 1.3439,
+   "price": 3.199
+  },
+  {
+   "opis_id": 73101,
+   "city": "Keenesburg",
+   "state": "CO",
+   "route_mile": 1050.6722,
+   "offset_miles": 3.1025,
+   "price": 3.149
+  },
+  {
+   "opis_id": 20009,
+   "city": "Big Springs",
+   "state": "NE",
+   "route_mile": 1205.5996,
+   "offset_miles": 0.8523,
+   "price": 3.074
+  },
+  {
+   "opis_id": 69085,
+   "city": "Ogallala",
+   "state": "NE",
+   "route_mile": 1224.4583,
+   "offset_miles": 1.02,
+   "price": 3.014
+  },
+  {
+   "opis_id": 72599,
+   "city": "Lexington",
+   "state": "NE",
+   "route_mile": 1334.1064,
+   "offset_miles": 2.2707,
+   "price": 2.979
+  },
+  {
+   "opis_id": 65287,
+   "city": "Overton",
+   "state": "NE",
+   "route_mile": 1347.0407,
+   "offset_miles": 3.3903,
+   "price": 2.899
+  },
+  {
+   "opis_id": 68368,
+   "city": "Waco",
+   "state": "NE",
+   "route_mile": 1458.1053,
+   "offset_miles": 5.1949,
+   "price": 2.799
+  },
+  {
+   "opis_id": 69840,
+   "city": "Gretna",
+   "state": "NE",
+   "route_mile": 1534.5315,
+   "offset_miles": 0.1735,
+   "price": 2.92067
+  },
+  {
+   "opis_id": 72501,
+   "city": "Peru",
+   "state": "IL",
+   "route_mile": 1933.6654,
+   "offset_miles": 0.4867,
+   "price": 2.969
+  },
+  {
+   "opis_id": 72782,
+   "city": "North Jackson",
+   "state": "OH",
+   "route_mile": 2393.7214,
+   "offset_miles": 1.2778,
+   "price": 3.06567
+  }
+ ],
+ "exact_optimum_cost": 705.0364
+}

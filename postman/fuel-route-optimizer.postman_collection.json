@@ -1,0 +1,97 @@
+{
+  "info": {
+    "name": "Fuel Route Optimizer",
+    "description": "Run `python manage.py runserver` first. The base_url variable defaults to http://localhost:8000.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [{ "key": "base_url", "value": "http://localhost:8000" }],
+  "item": [
+    {
+      "name": "Health check",
+      "request": { "method": "GET", "url": "{{base_url}}/api/health/" },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('200 and stations loaded', () => {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.json().stations_loaded).to.be.above(0);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Route: Los Angeles -> New York (cross-country)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/route/",
+        "body": { "mode": "raw", "raw": "{\n  \"start\": \"Los Angeles, CA\",\n  \"finish\": \"New York, NY\"\n}" }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const body = pm.response.json();",
+              "pm.test('200 OK', () => pm.response.to.have.status(200));",
+              "pm.test('GeoJSON LineString geometry', () => {",
+              "  pm.expect(body.route.geometry.type).to.eql('LineString');",
+              "  pm.expect(body.route.geometry.coordinates.length).to.be.above(2);",
+              "});",
+              "pm.test('stop costs add up to the total', () => {",
+              "  const sum = body.fuel_stops.reduce((a, s) => a + s.cost, 0);",
+              "  pm.expect(Math.abs(sum - body.fuel.total_fuel_cost)).to.be.below(0.011);",
+              "});",
+              "pm.test('every leg is within the 500 mile range', () => {",
+              "  const m = [0, ...body.fuel_stops.map(s => s.miles_from_start), body.route.distance_miles];",
+              "  for (let i = 1; i < m.length; i++) pm.expect(m[i] - m[i-1]).to.be.below(500.01);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Route: Chicago -> Dallas",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/route/",
+        "body": { "mode": "raw", "raw": "{\n  \"start\": \"Chicago, IL\",\n  \"finish\": \"Dallas, TX\"\n}" }
+      }
+    },
+    {
+      "name": "Route: coordinates as input (skips geocoding)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/route/",
+        "body": { "mode": "raw", "raw": "{\n  \"start\": \"41.8781,-87.6298\",\n  \"finish\": \"39.7684,-86.1581\"\n}" }
+      }
+    },
+    {
+      "name": "Error: missing field -> 400",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/route/",
+        "body": { "mode": "raw", "raw": "{\n  \"start\": \"Chicago, IL\"\n}" }
+      },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('400', () => pm.response.to.have.status(400));"] } }]
+    },
+    {
+      "name": "Error: unknown place -> 404",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/route/",
+        "body": { "mode": "raw", "raw": "{\n  \"start\": \"asdkjhqwe zzz\",\n  \"finish\": \"Chicago, IL\"\n}" }
+      },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('404', () => pm.response.to.have.status(404));"] } }]
+    }
+  ]
+}
